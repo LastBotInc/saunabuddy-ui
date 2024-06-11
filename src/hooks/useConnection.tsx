@@ -42,13 +42,20 @@ export const ConnectionProvider = ({
       if(!process.env.NEXT_PUBLIC_LIVEKIT_URL) {
         throw new Error("NEXT_PUBLIC_LIVEKIT_URL is not set");
       }
+
       url = process.env.NEXT_PUBLIC_LIVEKIT_URL;
-      const {accessToken} = await fetch("/api/token").then((res) => res.json());
-      token = accessToken;
+      if(!process.env.NEXT_PUBLIC_SERVER_URL) {
+        throw new Error("SERVER_URL is not set");
+      }
+      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL);
+      const data = await response.json();
+      token = data.token;
+      url = data.url;
     } else {
       token = config.settings.token;
       url = config.settings.ws_url;
     }
+    console.log("connecting", url, token, mode);
     setConnectionDetails({ wsUrl: url, token, shouldConnect: true, mode });
   }, [
     cloudWSUrl,
