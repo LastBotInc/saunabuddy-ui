@@ -47,7 +47,8 @@ export const ConnectionProvider = ({
       if(!process.env.NEXT_PUBLIC_SERVER_URL) {
         throw new Error("SERVER_URL is not set");
       }
-      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_URL);
+      const uuid = Math.random().toString(36).substring(4);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}?uuid=${uuid}`);
       const data = await response.json();
       token = data.token;
       url = data.url;
