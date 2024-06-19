@@ -63,13 +63,6 @@ const TokenConnect = ({
         >
           Connect
         </Button>
-        <a
-          href="https://kitt.livekit.io/"
-          className={`text-xs text-${accentColor}-500 hover:underline`}
-        >
-          Don’t have a URL or token? Try out our KITT example to see agents in
-          action!
-        </a>
       </div>
     </div>
   );

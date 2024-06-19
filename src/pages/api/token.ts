@@ -8,9 +8,10 @@ import { TokenResult } from "../../lib/types";
 const apiKey = process.env.LIVEKIT_API_KEY;
 const apiSecret = process.env.LIVEKIT_API_SECRET;
 
-const createToken = (userInfo: AccessTokenOptions, grant: VideoGrant) => {
+const createToken = (userInfo: AccessTokenOptions, grant: VideoGrant, metadata: string) => {
   const at = new AccessToken(apiKey, apiSecret, userInfo);
   at.addGrant(grant);
+  at.metadata = metadata; // Add metadata here
   return at.toJwt();
 };
 
@@ -36,7 +37,12 @@ export default async function handleToken(
       canSubscribe: true,
     };
 
-    const token = await createToken({ identity }, grant);
+    const metadata = JSON.stringify({
+      serverUrl: process.env.NEXT_PUBLIC_SERVER_URL,
+    });
+
+    const token = await createToken({ identity }, grant, metadata);
+
     const result: TokenResult = {
       identity,
       accessToken: token,

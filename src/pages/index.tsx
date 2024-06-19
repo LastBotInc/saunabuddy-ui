@@ -45,7 +45,7 @@ export function HomeInner() {
   } | null>(null);
   const { shouldConnect, wsUrl, token, mode, connect, disconnect } =
     useConnection();
-  
+
   const {config} = useConfig();
 
   const handleConnect = useCallback(
@@ -78,7 +78,7 @@ export function HomeInner() {
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta
           property="og:image"
-          content="https://livekit.io/images/og/agents-playground.png"
+          content="https://media.licdn.com/dms/image/D4D22AQFRJ4D2QayIwg/feedshare-shrink_1280/0/1718727439794?e=1721865600&v=beta&t=nnz9I4VFQnrUfzsIO3EmWqNuJiSPHE2FdpIbHHmSaIU"
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
