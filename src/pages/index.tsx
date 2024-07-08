@@ -49,10 +49,11 @@ export function HomeInner() {
   const {config} = useConfig();
 
   const handleConnect = useCallback(
-    async (c: boolean, mode: ConnectionMode) => {
-      c ? connect(mode) : disconnect();
+    async (c: boolean, opts?: { language?: string }) => {
+      const m = process.env.NEXT_PUBLIC_LIVEKIT_URL ? "env" : mode;
+      c ? connect(m, opts) : disconnect();
     },
-    [connect, disconnect]
+    [connect, disconnect, mode]
   );
 
   const showPG = useMemo(() => {
@@ -116,9 +117,9 @@ export function HomeInner() {
           >
             <Playground
               themeColors={themeColors}
-              onConnect={(c) => {
+              onConnect={(c, opts) => {
                 const m = process.env.NEXT_PUBLIC_LIVEKIT_URL ? "env" : mode;
-                handleConnect(c, m);
+                handleConnect(c, { ...opts, mode: m });
               }}
             />
             <RoomAudioRenderer />

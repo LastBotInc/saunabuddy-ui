@@ -32,7 +32,8 @@ export const ConnectionProvider = ({
     shouldConnect: boolean;
   }>({ wsUrl: "", token: "", shouldConnect: false, mode: "manual" });
 
-  const connect = useCallback(async (mode: ConnectionMode) => {
+  const connect = useCallback(async (mode: ConnectionMode, opts?: { language?: string }) => {
+    console.log("Connect called with mode:", mode, "and opts:", opts);
     let token = "";
     let url = "";
     if (mode === "cloud") {
@@ -45,10 +46,16 @@ export const ConnectionProvider = ({
 
       url = process.env.NEXT_PUBLIC_LIVEKIT_URL;
       if(!process.env.NEXT_PUBLIC_SERVER_URL) {
-        throw new Error("SERVER_URL is not set");
+        throw new Error("NEXT_PUBLIC_SERVER_URL is not set");
       }
       const uuid = Math.random().toString(36).substring(4);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}?uuid=${uuid}`);
+      const serverUrl = new URL(process.env.NEXT_PUBLIC_SERVER_URL);
+      serverUrl.searchParams.append('uuid', uuid);
+      if (opts?.language) {
+        serverUrl.searchParams.append('language', opts.language);
+      }
+      console.log("Server URL with params:", serverUrl.toString());
+      const response = await fetch(serverUrl.toString());
       const data = await response.json();
       token = data.token;
       url = data.url;
@@ -56,7 +63,7 @@ export const ConnectionProvider = ({
       token = config.settings.token;
       url = config.settings.ws_url;
     }
-    console.log("connecting", url, token, mode);
+    console.log("Connecting with URL:", url, "and token:", token);
     setConnectionDetails({ wsUrl: url, token, shouldConnect: true, mode });
   }, [
     cloudWSUrl,
@@ -64,7 +71,6 @@ export const ConnectionProvider = ({
     config.settings.ws_url,
     generateToken,
   ]);
-
   const disconnect = useCallback(async () => {
     setConnectionDetails((prev) => ({ ...prev, shouldConnect: false }));
   }, []);

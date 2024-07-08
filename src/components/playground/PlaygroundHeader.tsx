@@ -1,6 +1,7 @@
 import { Button } from "@/components/button/Button";
 import { LoadingSVG } from "@/components/button/LoadingSVG";
-import { SettingsDropdown } from "@/components/playground/SettingsDropdown";
+import { PlaygroundDeviceSelector } from "@/components/playground/PlaygroundDeviceSelector";
+
 import { useConfig } from "@/hooks/useConfig";
 import { ConnectionState } from "livekit-client";
 import { ReactNode } from "react";
@@ -32,25 +33,18 @@ export const PlaygroundHeader = ({
         height: height + "px",
       }}
     >
-      <div className="flex items-center gap-3 basis-2/3">
-        <div className="flex lg:basis-1/2">
-          <a href="https://livekit.io">{logo ?? <LKLogo />}</a>
-        </div>
-        <div className="lg:basis-1/2 lg:text-center text-xs lg:text-base lg:font-semibold text-white">
-          {title}
-        </div>
+      <div className="flex items-center gap-3 basis-1/4">
+        <a href="https://saunabuddy.vercel.app">{logo ?? <LKLogo />}</a>
       </div>
-      <div className="flex basis-1/3 justify-end items-center gap-2">
-        {githubLink && (
-          <a
-            href={githubLink}
-            target="_blank"
-            className={`text-white hover:text-white/80`}
-          >
-            <GithubSVG />
-          </a>
-        )}
-        {config.settings.editable && <SettingsDropdown />}
+      <div className="flex-grow text-center">
+        <h1 className="text-2xl font-bold text-white">{title}</h1>
+      </div>
+      <div className="flex basis-1/4 justify-end items-center gap-2">
+
+
+         <PlaygroundDeviceSelector kind='audiooutput' />
+         <PlaygroundDeviceSelector kind='audioinput' />
+
         <Button
           accentColor={
             connectionState === ConnectionState.Connected ? "red" : accentColor

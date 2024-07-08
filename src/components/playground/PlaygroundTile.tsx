@@ -32,7 +32,7 @@ export const PlaygroundTile: React.FC<PlaygroundTileProps> = ({
   const contentPadding = padding ? 4 : 0;
   return (
     <div
-      className={`flex flex-col border rounded-sm border-gray-800 text-gray-500 bg-${backgroundColor} ${className}`}
+      className={`flex flex-col rounded-sm text-gray-500 bg-${backgroundColor} ${className}`}
     >
       {title && (
         <div
