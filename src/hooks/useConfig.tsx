@@ -34,6 +34,7 @@ export type UserSettings = {
   };
   ws_url: string;
   token: string;
+  language?: string;
 };
 
 // Fallback if NEXT_PUBLIC_APP_CONFIG is not set
