@@ -6,7 +6,7 @@ import { ConnectionMode } from "@/hooks/useConnection";
 
 type PlaygroundConnectProps = {
   accentColor: string;
-  onConnectClicked: (mode: ConnectionMode, language: string) => void;
+  onConnectClicked: (mode: ConnectionMode, opts?: { language?: string }) => void;
 };
 
 const ConnectTab = ({ active, onClick, children }: any) => {

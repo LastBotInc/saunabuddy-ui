@@ -13,7 +13,7 @@ type TokenGeneratorData = {
   token: string;
   mode: ConnectionMode;
   disconnect: () => Promise<void>;
-  connect: (mode: ConnectionMode) => Promise<void>;
+  connect: (mode: ConnectionMode, opts?: { language?: string }) => Promise<void>;
 };
 
 const ConnectionContext = createContext<TokenGeneratorData | undefined>(undefined);
