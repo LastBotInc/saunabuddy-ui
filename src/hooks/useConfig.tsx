@@ -34,7 +34,7 @@ export type UserSettings = {
   };
   ws_url: string;
   token: string;
-  language?: string;
+  language: string;
 };
 
 // Fallback if NEXT_PUBLIC_APP_CONFIG is not set
@@ -56,6 +56,7 @@ const defaultConfig: AppConfig = {
     },
     ws_url: "",
     token: "",
+    language: 'en',
   },
   show_qr: false,
 };
@@ -123,6 +124,7 @@ export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
       },
       ws_url: "",
       token: "",
+      language: "en"
     } as UserSettings;
   }, [appConfig]);
 

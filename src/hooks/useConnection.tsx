@@ -32,6 +32,11 @@ export const ConnectionProvider = ({
     shouldConnect: boolean;
   }>({ wsUrl: "", token: "", shouldConnect: false, mode: "manual" });
 
+  const disconnect = useCallback(async () => {
+    setConnectionDetails((prev) => ({ ...prev, shouldConnect: false }));
+  }, []);
+
+
   const connect = useCallback(async (mode: ConnectionMode, opts?: { language?: string }) => {
     console.log("Connect called with mode:", mode, "and opts:", opts);
     let token = "";
@@ -71,9 +76,6 @@ export const ConnectionProvider = ({
     config.settings.ws_url,
     generateToken,
   ]);
-  const disconnect = useCallback(async () => {
-    setConnectionDetails((prev) => ({ ...prev, shouldConnect: false }));
-  }, []);
 
   return (
     <ConnectionContext.Provider

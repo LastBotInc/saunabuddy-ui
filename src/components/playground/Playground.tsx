@@ -89,7 +89,7 @@ export default function Playground({
       >
         {(() => {
           const languages = navigator.languages || [navigator.language];
-          const uniqueLanguages = [...new Set(languages.map(lang => lang.split('-')[0]))];
+          const uniqueLanguages = Array.from(new Set(languages.map(lang => lang.split('-')[0])));
 
           return (
             <select
@@ -97,7 +97,10 @@ export default function Playground({
               onChange={(e) => {
                 const newLanguage = e.target.value;
                 setSelectedLanguage(newLanguage);
-                setUserSettings({ language: newLanguage });
+                setUserSettings({
+                  ...config.settings,
+                  language: newLanguage
+                });
               }}
               value={selectedLanguage}
             >

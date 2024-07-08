@@ -58,7 +58,7 @@ const TokenConnect = ({
             newSettings.ws_url = url;
             newSettings.token = token;
             setUserSettings(newSettings);
-            onConnectClicked("manual");
+            onConnectClicked("manual", { language: config.settings.language });
           }}
         >
           Connect
