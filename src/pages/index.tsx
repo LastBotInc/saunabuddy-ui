@@ -79,10 +79,10 @@ export function HomeInner() {
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta
           property="og:image"
-          content="https://media.licdn.com/dms/image/D4D22AQFRJ4D2QayIwg/feedshare-shrink_1280/0/1718727439794?e=1721865600&v=beta&t=nnz9I4VFQnrUfzsIO3EmWqNuJiSPHE2FdpIbHHmSaIU"
+          content="https://saunabuddy.vercel.app/saunabuddy.png"
         />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:image:width" content="1024" />
+        <meta property="og:image:height" content="1024" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="relative flex flex-col justify-center px-4 items-center h-full w-full bg-black repeating-square-background">
