@@ -28,9 +28,9 @@ export const PlaygroundHeader = ({
   const { config } = useConfig();
   return (
     <div
-      className={`flex gap-4 pt-4 text-${accentColor}-500 justify-between items-center shrink-0`}
+      className={`flex flex-col sm:flex-row gap-4 pt-4 text-${accentColor}-500 justify-between items-center shrink-0`}
       style={{
-        height: height + "px",
+        minHeight: height + "px",
       }}
     >
       <div className="flex items-center gap-3 basis-1/4">
@@ -39,12 +39,11 @@ export const PlaygroundHeader = ({
       <div className="flex-grow text-center">
         <h1 className="text-2xl font-bold text-white">{title}</h1>
       </div>
-      <div className="flex basis-1/4 justify-end items-center gap-2">
-
-
-         <PlaygroundDeviceSelector kind='audiooutput' />
-         <PlaygroundDeviceSelector kind='audioinput' />
-
+      <div className="flex flex-col sm:flex-row basis-1/4 justify-end items-center gap-2">
+        <div className="flex gap-2">
+          <PlaygroundDeviceSelector kind='audiooutput' />
+          <PlaygroundDeviceSelector kind='audioinput' />
+        </div>
         <Button
           accentColor={
             connectionState === ConnectionState.Connected ? "red" : accentColor

@@ -32,6 +32,12 @@ export const PlaygroundDeviceSelector = ({
     };
   }, [showMenu]);
 
+  const getDefaultText = () => {
+    if (kind === 'audioinput') return 'Microphone';
+    if (kind === 'audiooutput') return 'Speakers';
+    return 'Select device';
+  };
+
   return (
     <div>
       <button
@@ -42,7 +48,7 @@ export const PlaygroundDeviceSelector = ({
         }}
       >
         <span className="max-w-[80px] overflow-ellipsis overflow-hidden whitespace-nowrap">
-          {selectedDeviceName}
+          {selectedDeviceName || getDefaultText()}
         </span>
         <ChevronSVG />
       </button>
