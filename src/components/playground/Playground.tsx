@@ -88,8 +88,12 @@ export default function Playground({
         style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
       >
         {(() => {
-          const languages = navigator.languages || [navigator.language];
-          const uniqueLanguages = Array.from(new Set(languages.map(lang => lang.split('-')[0])));
+          const priorityLanguages = ['en', 'fi', 'sv', 'de'];
+          const browserLanguages = (navigator.languages || [navigator.language]).map(lang => lang.split('-')[0]);
+          const uniqueLanguages = Array.from(new Set([
+            ...browserLanguages.filter(lang => priorityLanguages.includes(lang)),
+            ...priorityLanguages
+          ]));
 
           return (
             <select
@@ -104,7 +108,7 @@ export default function Playground({
               }}
               value={selectedLanguage}
             >
-              {uniqueLanguages.map(lang => (
+              {priorityLanguages.map(lang => (
                 <option key={lang} value={lang}>
                   {new Intl.DisplayNames([lang], { type: 'language' }).of(lang)}
                 </option>
@@ -138,10 +142,7 @@ export default function Playground({
         className="flex items-center justify-center w-full h-full bg-cover bg-center mx-auto"
         style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
       >
-
         <div className="bg-white bg-opacity-70 p-4 rounded relative">
-
-
           <AgentMultibandAudioVisualizer
             state="speaking"
             barWidth={30}
@@ -153,8 +154,6 @@ export default function Playground({
             borderRadius={12}
             gap={16}
           />
-
-
         </div>
 
         <TrackToggle
@@ -162,7 +161,6 @@ export default function Playground({
               source={Track.Source.Microphone}
         />
       </div>
-
     );
     if (roomState === ConnectionState.Disconnected) {
       return disconnectedContent;
@@ -179,7 +177,16 @@ export default function Playground({
     subscribedVolumes,
     roomState,
     onConnect,
+    selectedLanguage,
+    setUserSettings,
   ]);
+
+  useEffect(() => {
+    setUserSettings({
+      ...config.settings,
+      language: selectedLanguage
+    });
+  }, [selectedLanguage, setUserSettings, config.settings]);
 
   return (
     <>
@@ -191,7 +198,7 @@ export default function Playground({
         accentColor={config.settings.theme_color}
         connectionState={roomState}
         onConnectClicked={() =>
-          onConnect(roomState === ConnectionState.Disconnected)
+          onConnect(roomState === ConnectionState.Disconnected, { language: selectedLanguage })
         }
       />
       <div
