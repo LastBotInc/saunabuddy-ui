@@ -146,7 +146,7 @@ export default function Playground({
         className="flex flex-col items-center justify-between w-full h-full bg-cover bg-center mx-auto"
         style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
       >
-        <div className="flex items-center mt-32">
+        <div className="flex items-center mt-16 md:mt-32">
           <div className="bg-white bg-opacity-70 p-4 rounded relative mr-4">
             <AgentMultibandAudioVisualizer
               state="speaking"
@@ -167,7 +167,7 @@ export default function Playground({
           />
         </div>
 
-        <div className="bg-black bg-opacity-50 p-5 w-full mt-auto relative" style={{ maxHeight: '50%' }}>
+        <div className="bg-black bg-opacity-50 px-5 pt-5 w-full mt-auto relative" style={{ maxHeight: '50%' }}>
           <button
             onClick={() => setShowTranscription(!showTranscription)}
             className="absolute top-2 right-2 px-2 py-1 bg-gray-700 text-gray-300 rounded-sm hover:bg-gray-600"
