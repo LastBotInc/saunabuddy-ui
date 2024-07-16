@@ -66,7 +66,7 @@ export function TranscriptionTile({
       let name = msg.from?.name;
       if (!name) {
         if (isAgent) {
-          name = "Agent";
+          name = "SaunaBuddy";
         } else if (isSelf) {
           name = "You";
         } else {

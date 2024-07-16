@@ -9,6 +9,7 @@ import { TrackToggle } from "@livekit/components-react";
 import { AgentMultibandAudioVisualizer } from "@/components/visualization/AgentMultibandAudioVisualizer";
 import { useConfig } from "@/hooks/useConfig";
 import { useMultibandTrackVolume } from "@/hooks/useTrackVolume";
+import { TranscriptionTile } from "@/transcriptions/TranscriptionTile";
 import {
   TrackReferenceOrPlaceholder,
   useConnectionState,
@@ -54,6 +55,8 @@ export default function Playground({
   const roomState = useConnectionState();
   const tracks = useTracks();
 
+  const [showTranscription, setShowTranscription] = useState(true);
+
   useEffect(() => {
     if (roomState === ConnectionState.Connected) {
       localParticipant.setCameraEnabled(config.settings.inputs.camera);
@@ -80,6 +83,7 @@ export default function Playground({
     agentAudioTrack?.publication?.track,
     5
   );
+
 
   const audioTileContent = useMemo(() => {
     const disconnectedContent = (
@@ -139,27 +143,44 @@ export default function Playground({
 
     const visualizerContent = (
       <div
-        className="flex items-center justify-center w-full h-full bg-cover bg-center mx-auto"
+        className="flex flex-col items-center justify-between w-full h-full bg-cover bg-center mx-auto"
         style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
       >
-        <div className="bg-white bg-opacity-70 p-4 rounded relative">
-          <AgentMultibandAudioVisualizer
-            state="speaking"
-            barWidth={30}
-            minBarHeight={30}
-            maxBarHeight={150}
-            accentColor={config.settings.theme_color}
-            accentShade={500}
-            frequencies={subscribedVolumes}
-            borderRadius={12}
-            gap={16}
+        <div className="flex items-center mt-32">
+          <div className="bg-white bg-opacity-70 p-4 rounded relative mr-4">
+            <AgentMultibandAudioVisualizer
+              state="speaking"
+              barWidth={30}
+              minBarHeight={30}
+              maxBarHeight={150}
+              accentColor={config.settings.theme_color}
+              accentShade={500}
+              frequencies={subscribedVolumes}
+              borderRadius={12}
+              gap={16}
+            />
+          </div>
+
+          <TrackToggle
+            className="px-2 py-1 bg-gray-900 text-gray-300 border border-gray-800 rounded-sm hover:bg-gray-800 text-2xl h-[60px] w-[60px] flex items-center justify-center"
+            source={Track.Source.Microphone}
           />
         </div>
 
-        <TrackToggle
-              className="px-2 py-1 bg-gray-900 text-gray-300 border border-gray-800 rounded-sm hover:bg-gray-800 text-2xl h-[60px] w-[60px] flex items-center justify-center"
-              source={Track.Source.Microphone}
-        />
+        <div className="bg-black bg-opacity-50 p-5 w-full mt-auto relative" style={{ maxHeight: '50%' }}>
+          <button
+            onClick={() => setShowTranscription(!showTranscription)}
+            className="absolute top-2 right-2 px-2 py-1 bg-gray-700 text-gray-300 rounded-sm hover:bg-gray-600"
+          >
+            {showTranscription ? 'Hide' : 'Show'}
+          </button>
+          {showTranscription && agentAudioTrack && (
+            <TranscriptionTile
+              agentAudioTrack={agentAudioTrack}
+              accentColor={config.settings.theme_color}
+            />
+          )}
+        </div>
       </div>
     );
     if (roomState === ConnectionState.Disconnected) {
