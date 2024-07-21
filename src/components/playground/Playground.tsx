@@ -24,7 +24,7 @@ import {
   RoomEvent,
   Track,
 } from "livekit-client";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState, useRef } from "react";
 
 export interface PlaygroundProps {
   logo?: ReactNode;
@@ -56,6 +56,7 @@ export default function Playground({
   const tracks = useTracks();
 
   const [showTranscription, setShowTranscription] = useState(true);
+  const transcriptionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (roomState === ConnectionState.Connected) {
@@ -84,6 +85,11 @@ export default function Playground({
     5
   );
 
+  useEffect(() => {
+    if (transcriptionRef.current) {
+      transcriptionRef.current.scrollTop = transcriptionRef.current.scrollHeight;
+    }
+  }, [agentAudioTrack]);
 
   const audioTileContent = useMemo(() => {
     const disconnectedContent = (
@@ -146,7 +152,7 @@ export default function Playground({
         className="flex flex-col items-center justify-between w-full h-full bg-cover bg-center mx-auto"
         style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
       >
-        <div className="flex overflow-y-auto items-center h-16 mt-16 md:mt-32">
+        <div className="flex overflow-y-auto items-center h-32 mt-16 md:mt-32">
           <div className="bg-white bg-opacity-70 p-4 rounded relative mr-4">
             <AgentMultibandAudioVisualizer
               state="speaking"
@@ -167,7 +173,7 @@ export default function Playground({
           />
         </div>
 
-        <div className="bg-black bg-opacity-50 p-5 w-full mt-auto relative" style={{ maxHeight: '50%', overflowY: 'auto' }}>
+        <div ref={transcriptionRef} className="bg-black bg-opacity-50 p-5 w-full mt-auto relative" style={{ maxHeight: '50%', overflowY: 'auto' }}>
           <button
             onClick={() => setShowTranscription(!showTranscription)}
             className="absolute top-2 right-2 px-2 py-1 bg-gray-700 text-gray-300 rounded-sm hover:bg-gray-600"
