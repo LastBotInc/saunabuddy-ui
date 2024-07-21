@@ -146,7 +146,7 @@ export default function Playground({
         className="flex flex-col items-center justify-between w-full h-full bg-cover bg-center mx-auto"
         style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
       >
-        <div className="flex overflow-y-auto items-center mt-16 md:mt-32">
+        <div className="flex overflow-y-auto items-center h-16 mt-16 md:mt-32">
           <div className="bg-white bg-opacity-70 p-4 rounded relative mr-4">
             <AgentMultibandAudioVisualizer
               state="speaking"
