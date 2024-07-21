@@ -132,7 +132,7 @@ export default function Playground({
     const waitingContent = (
       <div
         className="flex items-center justify-center w-full h-full bg-cover bg-center mx-auto"
-        style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
+        style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px", maxHeight: "100%" }}
       >
         <div className="bg-white bg-opacity-70 p-4 rounded">
           <LoadingSVG />
@@ -146,7 +146,7 @@ export default function Playground({
         className="flex flex-col items-center justify-between w-full h-full bg-cover bg-center mx-auto"
         style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
       >
-        <div className="flex items-center mt-16 md:mt-32">
+        <div className="flex overflow-y-auto items-center mt-16 md:mt-32">
           <div className="bg-white bg-opacity-70 p-4 rounded relative mr-4">
             <AgentMultibandAudioVisualizer
               state="speaking"
@@ -162,23 +162,25 @@ export default function Playground({
           </div>
 
           <TrackToggle
-            className="px-2 py-1 bg-gray-900 text-gray-300 border border-gray-800 rounded-sm hover:bg-gray-800 text-2xl h-[60px] w-[60px] flex items-center justify-center"
+            className="px-2 py-1 bg-gray-900 text-gray-300 border border-gray-800 rounded-sm hover:bg-gray-800 text-xl h-[45px] w-[45px] flex items-center justify-center"
             source={Track.Source.Microphone}
           />
         </div>
 
-        <div className="bg-black bg-opacity-50 px-5 pt-5 w-full mt-auto relative" style={{ maxHeight: '50%' }}>
+        <div className="bg-black bg-opacity-50 p-5 w-full mt-auto relative" style={{ maxHeight: '50%', overflowY: 'auto' }}>
           <button
             onClick={() => setShowTranscription(!showTranscription)}
             className="absolute top-2 right-2 px-2 py-1 bg-gray-700 text-gray-300 rounded-sm hover:bg-gray-600"
           >
             {showTranscription ? 'Hide' : 'Show'}
           </button>
-          {showTranscription && agentAudioTrack && (
-            <TranscriptionTile
-              agentAudioTrack={agentAudioTrack}
-              accentColor={config.settings.theme_color}
-            />
+          {agentAudioTrack && (
+            <div style={{ display: showTranscription ? 'block' : 'none' }}>
+              <TranscriptionTile
+                agentAudioTrack={agentAudioTrack}
+                accentColor={config.settings.theme_color}
+              />
+            </div>
           )}
         </div>
       </div>
@@ -200,6 +202,7 @@ export default function Playground({
     onConnect,
     selectedLanguage,
     setUserSettings,
+    showTranscription,
   ]);
 
   useEffect(() => {
@@ -224,7 +227,7 @@ export default function Playground({
       />
       <div
         className={`flex gap-4 py-4 grow w-full selection:bg-${config.settings.theme_color}-900`}
-        style={{ height: `calc(100% - ${headerHeight}px)` }}
+        style={{ height: '100%', maxHeight: '100%' }}
       >
         <PlaygroundTile
           title=""
