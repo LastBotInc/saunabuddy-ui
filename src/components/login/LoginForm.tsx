@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { track } from "@vercel/analytics";
 
 export default function Login({
   onAuthenticated,
@@ -13,7 +14,13 @@ export default function Login({
     const authExpiration = localStorage.getItem("authExpiration");
     if (authExpiration) {
       const currentTime = new Date().getTime();
-      if (currentTime < parseInt(authExpiration, 10)) {
+      const expirationTime = parseInt(authExpiration, 10);
+      if (currentTime < expirationTime) {
+        track("Login", {
+          userName: "existing user",
+          timestamp: new Date().toISOString(),
+          expirationTime,
+        });
         onAuthenticated();
       } else {
         localStorage.removeItem("authExpiration");
@@ -36,6 +43,11 @@ export default function Login({
       if (response.ok) {
         const expirationTime = new Date().getTime() + 60 * 60 * 1000; // 1 hour from now
         localStorage.setItem("authExpiration", expirationTime.toString());
+        track("Login", {
+          userName: email,
+          timestamp: new Date().toISOString(),
+          expirationTime,
+        });
         onAuthenticated();
       } else {
         setError(data.message || "Login failed");
