@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useCallback, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 import { PlaygroundConnect } from "@/components/PlaygroundConnect";
 import Playground from "@/components/playground/Playground";
@@ -43,6 +44,7 @@ export default function Home() {
     <ConfigProvider>
       <ConnectionProvider>
         <HomeInner />
+        <Analytics />
       </ConnectionProvider>
     </ConfigProvider>
   );
