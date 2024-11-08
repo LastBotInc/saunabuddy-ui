@@ -7,13 +7,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import { useCallback, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 import { PlaygroundConnect } from "@/components/PlaygroundConnect";
 import Playground from "@/components/playground/Playground";
 import { PlaygroundToast, ToastType } from "@/components/toast/PlaygroundToast";
 import { ConfigProvider, useConfig } from "@/hooks/useConfig";
-import { ConnectionMode, ConnectionProvider, useConnection } from "@/hooks/useConnection";
+import {
+  ConnectionMode,
+  ConnectionProvider,
+  useConnection,
+} from "@/hooks/useConnection";
 import { useMemo } from "react";
+import Login from "@/components/login/LoginForm";
 
 const themeColors = [
   "cyan",
@@ -29,10 +35,16 @@ const themeColors = [
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  if (!isAuthenticated) {
+    return <Login onAuthenticated={() => setIsAuthenticated(true)} />;
+  }
   return (
     <ConfigProvider>
       <ConnectionProvider>
         <HomeInner />
+        <Analytics />
       </ConnectionProvider>
     </ConfigProvider>
   );
@@ -46,7 +58,7 @@ export function HomeInner() {
   const { shouldConnect, wsUrl, token, mode, connect, disconnect } =
     useConnection();
 
-  const {config} = useConfig();
+  const { config } = useConfig();
 
   const handleConnect = useCallback(
     async (c: boolean, mode: ConnectionMode, opts?: { language?: string }) => {
@@ -60,11 +72,11 @@ export function HomeInner() {
     if (process.env.NEXT_PUBLIC_LIVEKIT_URL) {
       return true;
     }
-    if(wsUrl) {
+    if (wsUrl) {
       return true;
     }
     return false;
-  }, [wsUrl])
+  }, [wsUrl]);
 
   return (
     <>
