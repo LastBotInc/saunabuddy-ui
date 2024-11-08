@@ -4,8 +4,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const { email, password } = req.body;
 
-    const validPasswords = process.env.HOMEPAGE_PASSWORDS
-      ? process.env.HOMEPAGE_PASSWORDS.split(",")
+    const validPasswords = process.env.NEXT_PUBLIC_HOMEPAGE_PASSWORDS
+      ? process.env.NEXT_PUBLIC_HOMEPAGE_PASSWORDS.split(",")
       : [];
 
     if (validPasswords.includes(password)) {
