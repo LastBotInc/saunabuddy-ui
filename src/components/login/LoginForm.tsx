@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { track } from "@vercel/analytics";
 
 export default function Login({
@@ -51,6 +52,11 @@ export default function Login({
         onAuthenticated();
       } else {
         setError(data.message || "Login failed");
+        track("Login failed", {
+          userName: email,
+          timestamp: new Date().toISOString(),
+          expirationTime: null,
+        });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -67,6 +73,7 @@ export default function Login({
         objectFit: "cover",
       }}
     >
+      <Analytics />
       <div className="bg-white p-10 rounded-lg shadow-lg max-w-md w-full text-center">
         <h1 className="text-2xl font-bold mb-6 text-gray-800">
           Login To SaunaBuddy
