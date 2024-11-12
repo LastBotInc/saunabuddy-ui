@@ -25,11 +25,18 @@ import {
   Track,
 } from "livekit-client";
 import { ReactNode, useEffect, useMemo, useState, useRef } from "react";
+import ServerSelect from "@/components/playground/ServerSelection";
 
 export interface PlaygroundProps {
   logo?: ReactNode;
   themeColors: string[];
-  onConnect: (connect: boolean, opts?: { token?: string; url?: string; language?: string }) => void;
+  onConnect: (
+    connect: boolean,
+    opts?: { token?: string; url?: string; language?: string }
+  ) => void;
+  serverInfo: { name: string; description: string; url: string }[];
+  selectedServerInfo: { name: string; description: string; url: string };
+  handleServerChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const headerHeight = 56;
@@ -38,11 +45,14 @@ export default function Playground({
   logo,
   themeColors,
   onConnect,
+  serverInfo,
+  selectedServerInfo,
+  handleServerChange,
 }: PlaygroundProps) {
   const { config, setUserSettings } = useConfig();
   const { name } = useRoomInfo();
   const [selectedLanguage, setSelectedLanguage] = useState(() => {
-    const browserLanguage = navigator.language.split('-')[0];
+    const browserLanguage = navigator.language.split("-")[0];
     return config.settings.language || browserLanguage;
   });
   const { localParticipant } = useLocalParticipant();
@@ -87,7 +97,8 @@ export default function Playground({
 
   useEffect(() => {
     if (transcriptionRef.current) {
-      transcriptionRef.current.scrollTop = transcriptionRef.current.scrollHeight;
+      transcriptionRef.current.scrollTop =
+        transcriptionRef.current.scrollHeight;
     }
   }, [agentAudioTrack]);
 
@@ -95,15 +106,24 @@ export default function Playground({
     const disconnectedContent = (
       <div
         className="flex flex-col items-center justify-center w-full h-full bg-cover bg-center mx-auto"
-        style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
+        style={{
+          backgroundImage: "url('/saunabuddy.png')",
+          maxWidth: "1024px",
+        }}
       >
         {(() => {
-          const priorityLanguages = ['en', 'fi', 'sv', 'de'];
-          const browserLanguages = (navigator.languages || [navigator.language]).map(lang => lang.split('-')[0]);
-          const uniqueLanguages = Array.from(new Set([
-            ...browserLanguages.filter(lang => priorityLanguages.includes(lang)),
-            ...priorityLanguages
-          ]));
+          const priorityLanguages = ["en", "fi", "sv", "de"];
+          const browserLanguages = (
+            navigator.languages || [navigator.language]
+          ).map((lang) => lang.split("-")[0]);
+          const uniqueLanguages = Array.from(
+            new Set([
+              ...browserLanguages.filter((lang) =>
+                priorityLanguages.includes(lang)
+              ),
+              ...priorityLanguages,
+            ])
+          );
 
           return (
             <select
@@ -113,14 +133,14 @@ export default function Playground({
                 setSelectedLanguage(newLanguage);
                 setUserSettings({
                   ...config.settings,
-                  language: newLanguage
+                  language: newLanguage,
                 });
               }}
               value={selectedLanguage}
             >
-              {priorityLanguages.map(lang => (
+              {priorityLanguages.map((lang) => (
                 <option key={lang} value={lang}>
-                  {new Intl.DisplayNames([lang], { type: 'language' }).of(lang)}
+                  {new Intl.DisplayNames([lang], { type: "language" }).of(lang)}
                 </option>
               ))}
             </select>
@@ -138,7 +158,11 @@ export default function Playground({
     const waitingContent = (
       <div
         className="flex items-center justify-center w-full h-full bg-cover bg-center mx-auto"
-        style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px", maxHeight: "100%" }}
+        style={{
+          backgroundImage: "url('/saunabuddy.png')",
+          maxWidth: "1024px",
+          maxHeight: "100%",
+        }}
       >
         <div className="bg-white bg-opacity-70 p-4 rounded">
           <LoadingSVG />
@@ -150,7 +174,10 @@ export default function Playground({
     const visualizerContent = (
       <div
         className="flex flex-col items-center justify-between w-full h-full bg-cover bg-center mx-auto"
-        style={{ backgroundImage: "url('/saunabuddy.png')", maxWidth: "1024px" }}
+        style={{
+          backgroundImage: "url('/saunabuddy.png')",
+          maxWidth: "1024px",
+        }}
       >
         <div className="flex overflow-y-auto items-center h-32 mt-16 md:mt-32">
           <div className="bg-white bg-opacity-70 p-4 rounded relative mr-4">
@@ -173,15 +200,19 @@ export default function Playground({
           />
         </div>
 
-        <div ref={transcriptionRef} className="bg-black bg-opacity-50 p-5 w-full mt-auto relative" style={{ maxHeight: '50%', overflowY: 'auto' }}>
+        <div
+          ref={transcriptionRef}
+          className="bg-black bg-opacity-50 p-5 w-full mt-auto relative"
+          style={{ maxHeight: "50%", overflowY: "auto" }}
+        >
           <button
             onClick={() => setShowTranscription(!showTranscription)}
             className="absolute top-2 right-2 px-2 py-1 bg-gray-700 text-gray-300 rounded-sm hover:bg-gray-600"
           >
-            {showTranscription ? 'Hide' : 'Show'}
+            {showTranscription ? "Hide" : "Show"}
           </button>
           {agentAudioTrack && (
-            <div style={{ display: showTranscription ? 'block' : 'none' }}>
+            <div style={{ display: showTranscription ? "block" : "none" }}>
               <TranscriptionTile
                 agentAudioTrack={agentAudioTrack}
                 accentColor={config.settings.theme_color}
@@ -214,26 +245,33 @@ export default function Playground({
   useEffect(() => {
     setUserSettings({
       ...config.settings,
-      language: selectedLanguage
+      language: selectedLanguage,
     });
   }, [selectedLanguage, setUserSettings, config.settings]);
 
   return (
     <>
+      <ServerSelect
+        serverInfo={serverInfo}
+        selectedServerInfo={selectedServerInfo}
+        handleServerChange={handleServerChange}
+      />
       <PlaygroundHeader
-        title={config.title}
+        title={selectedServerInfo.name}
         logo={logo}
         githubLink={config.github_link}
         height={headerHeight}
         accentColor={config.settings.theme_color}
         connectionState={roomState}
         onConnectClicked={() =>
-          onConnect(roomState === ConnectionState.Disconnected, { language: selectedLanguage })
+          onConnect(roomState === ConnectionState.Disconnected, {
+            language: selectedLanguage,
+          })
         }
       />
       <div
         className={`flex gap-4 py-4 grow w-full selection:bg-${config.settings.theme_color}-900`}
-        style={{ height: '100%', maxHeight: '100%' }}
+        style={{ height: "100%", maxHeight: "100%" }}
       >
         <PlaygroundTile
           title=""
