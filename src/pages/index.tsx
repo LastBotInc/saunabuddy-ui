@@ -58,13 +58,60 @@ export function HomeInner() {
 
   const { config } = useConfig();
 
-  const handleConnect = useCallback(
-    async (c: boolean, mode: ConnectionMode, opts?: { language?: string }) => {
-      const m = process.env.NEXT_PUBLIC_LIVEKIT_URL ? "env" : mode;
-      c ? connect(m, opts) : disconnect();
-    },
-    [connect, disconnect]
+  const serverInfo = useMemo(() => {
+    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "[]";
+    try {
+      const parsed = JSON.parse(serverUrl);
+      if (Array.isArray(parsed)) {
+        return parsed as Array<{
+          name: string;
+          description: string;
+          url: string;
+        }>;
+      }
+    } catch (e) {
+      console.error("Invalid server URL format", e);
+    }
+    return [
+      {
+        name: config.title,
+        description: config.description,
+        url: serverUrl,
+      },
+    ];
+  }, [config.title, config.description]);
+
+  const [selectedServerInfo, setSelectedServerInfo] = useState(
+    serverInfo[0] || {}
   );
+
+  const handleConnect = useCallback(
+    async (
+      c: boolean,
+      mode: ConnectionMode,
+      opts?: { language?: string; serverUrl?: string }
+    ) => {
+      const m = process.env.NEXT_PUBLIC_LIVEKIT_URL ? "env" : mode;
+      const serverUrl = opts?.serverUrl || selectedServerInfo.url;
+      c ? connect(m, { ...opts, serverUrl } as any) : disconnect();
+    },
+    [connect, disconnect, selectedServerInfo.url]
+  );
+
+  const handleServerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newServerInfo = serverInfo.find(
+      (server) => server.url === e.target.value
+    ) || {
+      name: "",
+      description: "",
+      url: "",
+    };
+
+    setSelectedServerInfo(newServerInfo);
+    disconnect();
+    const m = process.env.NEXT_PUBLIC_LIVEKIT_URL ? "env" : mode;
+    handleConnect(true, m, { serverUrl: newServerInfo.url });
+  };
 
   const showPG = useMemo(() => {
     if (process.env.NEXT_PUBLIC_LIVEKIT_URL) {
@@ -131,6 +178,9 @@ export function HomeInner() {
                 const m = process.env.NEXT_PUBLIC_LIVEKIT_URL ? "env" : mode;
                 handleConnect(c, m, opts);
               }}
+              serverInfo={serverInfo}
+              selectedServerInfo={selectedServerInfo}
+              handleServerChange={handleServerChange}
             />
             <RoomAudioRenderer />
             <StartAudio label="Click to enable audio playback" />
@@ -144,6 +194,27 @@ export function HomeInner() {
           />
         )}
       </main>
+      <footer className="w-full max-w-2xl bg-black text-white text-center p-4 mx-auto">
+        <p className="text-sm flex flex-col md:flex-row md:justify-center">
+          <span>&copy; {new Date().getFullYear()} Harvia</span>
+          <a
+            href="https://www.harvia.com/en/privacy-notice/"
+            className="block underline hover:text-gray-400 whitespace-nowrap mx-2"
+          >
+            Privacy notice
+          </a>
+          <a
+            href="https://www.harvia.com/en/legal-disclaimer/"
+            className="block underline hover:text-gray-400 whitespace-nowrap"
+          >
+            Legal Disclaimer
+          </a>
+        </p>
+        <p className="text-sm mt-2">
+          Disclaimer: SaunaBuddy is in Beta and can make mistakes, please check
+          important information.
+        </p>
+      </footer>
     </>
   );
 }
