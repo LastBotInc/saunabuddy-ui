@@ -10,7 +10,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const { email, password } = req.body;
 
     // Check if token exists in the cookie
-    const existingToken = getCookie("token", { req, res });
+    const existingToken = getCookie("lb_auth", { req, res });
 
     if (existingToken) {
       try {
@@ -41,7 +41,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "1d" });
 
       // Set token in a cookie
-      setCookie("token", token, {
+      setCookie("lb_auth", token, {
         req,
         res,
         maxAge: 60 * 60 * 24, // 1 day
