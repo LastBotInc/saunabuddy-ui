@@ -76,6 +76,7 @@ export const ConnectionProvider = ({
         url = config.settings.ws_url;
       }
       console.log("Connecting with URL:", url, "and token:", token);
+      sessionStorage.setItem("lb_connection_session", Date.now().toString());
       setConnectionDetails({ wsUrl: url, token, shouldConnect: true, mode });
     },
     [cloudWSUrl, config.settings.token, config.settings.ws_url, generateToken]
