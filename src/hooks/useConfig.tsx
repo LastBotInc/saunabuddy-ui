@@ -18,7 +18,7 @@ export type AppConfig = {
   video_fit?: "cover" | "contain";
   settings: UserSettings;
   show_qr?: boolean;
-  bg_image_url: string;
+  bg_image_url?: string;
 };
 
 export type UserSettings = {
