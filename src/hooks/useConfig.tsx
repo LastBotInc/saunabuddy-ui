@@ -18,6 +18,7 @@ export type AppConfig = {
   video_fit?: "cover" | "contain";
   settings: UserSettings;
   show_qr?: boolean;
+  bg_image_url: string;
 };
 
 export type UserSettings = {
@@ -42,6 +43,7 @@ const defaultConfig: AppConfig = {
   title: "SaunaBuddy",
   description: "Your friendly sauna companion",
   video_fit: "cover",
+  bg_image_url: "/saunabuddy.png",
   settings: {
     editable: true,
     theme_color: "cyan",
@@ -56,7 +58,7 @@ const defaultConfig: AppConfig = {
     },
     ws_url: "",
     token: "",
-    language: 'en',
+    language: "en",
   },
   show_qr: false,
 };
@@ -124,7 +126,7 @@ export const ConfigProvider = ({ children }: { children: React.ReactNode }) => {
       },
       ws_url: "",
       token: "",
-      language: "en"
+      language: "en",
     } as UserSettings;
   }, [appConfig]);
 
