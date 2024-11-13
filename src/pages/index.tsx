@@ -18,7 +18,10 @@ import {
   useConnection,
 } from "@/hooks/useConnection";
 import { useMemo } from "react";
+import { Analytics } from "@vercel/analytics/react";
+import { track } from "@vercel/analytics";
 import Login from "@/components/login/LoginForm";
+import { getSessionPeriod } from "@/lib/util";
 
 const themeColors = [
   "cyan",
@@ -36,13 +39,15 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  if (!isAuthenticated) {
-    return <Login onAuthenticated={() => setIsAuthenticated(true)} />;
-  }
   return (
     <ConfigProvider>
       <ConnectionProvider>
-        <HomeInner />
+        <Analytics />
+        {isAuthenticated ? (
+          <HomeInner />
+        ) : (
+          <Login onAuthenticated={() => setIsAuthenticated(true)} />
+        )}
       </ConnectionProvider>
     </ConfigProvider>
   );
@@ -109,8 +114,19 @@ export function HomeInner() {
 
     setSelectedServerInfo(newServerInfo);
     disconnect();
+    logSessionDuration();
     const m = process.env.NEXT_PUBLIC_LIVEKIT_URL ? "env" : mode;
     handleConnect(true, m, { serverUrl: newServerInfo.url });
+  };
+
+  const logSessionDuration = () => {
+    const sessionDuration = getSessionPeriod();
+    if (sessionDuration) {
+      track("Session duration", {
+        name: selectedServerInfo.name || "",
+        sessionDuration,
+      });
+    }
   };
 
   const showPG = useMemo(() => {
