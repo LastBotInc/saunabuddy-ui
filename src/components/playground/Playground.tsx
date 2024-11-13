@@ -102,14 +102,16 @@ export default function Playground({
     }
   }, [agentAudioTrack]);
 
+  const backgroundStyle = {
+    backgroundImage: `url('${config.bg_image_url || "/saunabuddy.png"}')`,
+    maxWidth: "1024px",
+  };
+
   const audioTileContent = useMemo(() => {
     const disconnectedContent = (
       <div
         className="flex flex-col items-center justify-center w-full h-full bg-cover bg-center mx-auto"
-        style={{
-          backgroundImage: `url('${config.bg_image_url}')`,
-          maxWidth: "1024px",
-        }}
+        style={backgroundStyle}
       >
         {(() => {
           const priorityLanguages = ["en", "fi", "sv", "de"];
@@ -158,11 +160,7 @@ export default function Playground({
     const waitingContent = (
       <div
         className="flex items-center justify-center w-full h-full bg-cover bg-center mx-auto"
-        style={{
-          backgroundImage: `url('${config.bg_image_url}')`,
-          maxWidth: "1024px",
-          maxHeight: "100%",
-        }}
+        style={{ ...backgroundStyle, maxHeight: "100%" }}
       >
         <div className="bg-white bg-opacity-70 p-4 rounded">
           <LoadingSVG />
@@ -174,10 +172,7 @@ export default function Playground({
     const visualizerContent = (
       <div
         className="flex flex-col items-center justify-between w-full h-full bg-cover bg-center mx-auto"
-        style={{
-          backgroundImage: `url('${config.bg_image_url}')`,
-          maxWidth: "1024px",
-        }}
+        style={backgroundStyle}
       >
         <div className="flex overflow-y-auto items-center h-32 mt-16 md:mt-32">
           <div className="bg-white bg-opacity-70 p-4 rounded relative mr-4">
