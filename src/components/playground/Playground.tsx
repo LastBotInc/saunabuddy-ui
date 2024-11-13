@@ -107,7 +107,7 @@ export default function Playground({
       <div
         className="flex flex-col items-center justify-center w-full h-full bg-cover bg-center mx-auto"
         style={{
-          backgroundImage: "url('/saunabuddy.png')",
+          backgroundImage: `url('${config.bg_image_url}')`,
           maxWidth: "1024px",
         }}
       >
@@ -159,7 +159,7 @@ export default function Playground({
       <div
         className="flex items-center justify-center w-full h-full bg-cover bg-center mx-auto"
         style={{
-          backgroundImage: "url('/saunabuddy.png')",
+          backgroundImage: `url('${config.bg_image_url}')`,
           maxWidth: "1024px",
           maxHeight: "100%",
         }}
@@ -175,7 +175,7 @@ export default function Playground({
       <div
         className="flex flex-col items-center justify-between w-full h-full bg-cover bg-center mx-auto"
         style={{
-          backgroundImage: "url('/saunabuddy.png')",
+          backgroundImage: `url('${config.bg_image_url}')`,
           maxWidth: "1024px",
         }}
       >
