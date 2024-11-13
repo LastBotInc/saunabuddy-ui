@@ -83,7 +83,7 @@ export default function Login({
     <div
       className="flex justify-center items-center h-screen bg-gray-100"
       style={{
-        backgroundImage: `url('${config.bg_image_url}')`,
+        backgroundImage: `url('${config.bg_image_url || "/saunabuddy.png"}')`,
         backgroundSize: "cover",
         objectFit: "cover",
       }}
