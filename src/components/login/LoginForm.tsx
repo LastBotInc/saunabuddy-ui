@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Analytics } from "@vercel/analytics/react";
 import { track } from "@vercel/analytics";
 import { isValidEmail } from "@/lib/util";
+import { useConfig } from "@/hooks/useConfig";
 
 export default function Login({
   onAuthenticated,
@@ -12,6 +12,7 @@ export default function Login({
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const { config } = useConfig();
 
   useEffect(() => {
     // Attempt to verify the session by making a request to the server
@@ -82,12 +83,11 @@ export default function Login({
     <div
       className="flex justify-center items-center h-screen bg-gray-100"
       style={{
-        backgroundImage: "url('/saunabuddy.png')",
+        backgroundImage: `url('${config.bg_image_url || "/saunabuddy.png"}')`,
         backgroundSize: "cover",
         objectFit: "cover",
       }}
     >
-      <Analytics />
       {loading ? (
         <div className="text-white">Loading...</div>
       ) : (
