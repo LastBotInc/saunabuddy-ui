@@ -91,7 +91,7 @@ export default function Login({
       {loading ? (
         <div className="text-white">Loading...</div>
       ) : (
-        <div className="bg-white p-10 rounded-lg shadow-lg max-w-md w-full text-center">
+        <div className="bg-white px-10 pt-10 rounded-lg shadow-lg max-w-md w-full text-center">
           <h1 className="text-2xl font-bold mb-6 text-gray-800">
             Login To SaunaBuddy
           </h1>
@@ -116,6 +116,16 @@ export default function Login({
             Login
           </button>
           {error && <p className="text-red-500 mt-4">{error}</p>}
+          <div className="my-5">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdh1AUrn2pDBcyRMgWpCj8G90DiGwov5wbcSZ6RRQneQowN_g/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              Request access to the SaunaBuddy beta
+            </a>
+          </div>
         </div>
       )}
     </div>
