@@ -116,6 +116,16 @@ export default function Login({
             Login
           </button>
           {error && <p className="text-red-500 mt-4">{error}</p>}
+          <div className="mt-5">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdh1AUrn2pDBcyRMgWpCj8G90DiGwov5wbcSZ6RRQneQowN_g/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              Request access to the SaunaBuddy beta
+            </a>
+          </div>
         </div>
       )}
     </div>
