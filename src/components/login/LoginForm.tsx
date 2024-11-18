@@ -135,7 +135,7 @@ export default function Login({
               rel="noopener noreferrer"
               className="text-blue-500 underline"
             >
-              Demander l'accès à la version bêta de SaunaBuddy
+              Demander l&apos;accès à la version bêta de SaunaBuddy
             </a>
           </div>
         </div>
