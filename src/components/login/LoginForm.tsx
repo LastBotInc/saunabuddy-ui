@@ -82,9 +82,11 @@ export default function Login({
     <div
       className="flex justify-center items-center h-screen bg-gray-100"
       style={{
-        backgroundImage: "url('/saunabuddy.png')",
+        backgroundImage:
+          "url('https://imagedelivery.net/5lD6UX1XAYBz_50pGg1VKg/627bcab1-ca9d-47ba-49e1-a92404205f00/public')",
         backgroundSize: "cover",
-        objectFit: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       <Analytics />
@@ -124,6 +126,16 @@ export default function Login({
               className="text-blue-500 underline"
             >
               Request access to the SaunaBuddy beta
+            </a>
+          </div>
+          <div className="mt-4">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdh1AUrn2pDBcyRMgWpCj8G90DiGwov5wbcSZ6RRQneQowN_g/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              Demander l'accès à la version bêta de SaunaBuddy
             </a>
           </div>
         </div>
